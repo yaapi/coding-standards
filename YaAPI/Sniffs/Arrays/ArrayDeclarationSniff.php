@@ -606,7 +606,8 @@ class YaAPI_Sniffs_Arrays_ArrayDeclarationSniff implements PHP_CodeSniffer_Sniff
                 else
                 {
                     $currentEntry['index']         = $indexStart;
-                    $currentEntry['index_content'] = $phpcsFile->getTokensAsString($indexStart, ($indexEnd - $indexStart + 1));
+                    $currentEntry['index_content'] = $phpcsFile->getTokensAsString($indexStart,
+                            ($indexEnd - $indexStart + 1));
                 }
 
                 $indexLength = strlen($currentEntry['index_content']);
@@ -747,7 +748,7 @@ class YaAPI_Sniffs_Arrays_ArrayDeclarationSniff implements PHP_CodeSniffer_Sniff
                         $phpcsFile->fixer->addNewlineBefore($value['value']);
                     }
                 }
-                else if ($tokens[($value['value'] - 1)]['code'] === T_WHITESPACE)
+                elseif ($tokens[($value['value'] - 1)]['code'] === T_WHITESPACE)
                 {
                     $expected = $keywordStart;
 
@@ -890,12 +891,11 @@ class YaAPI_Sniffs_Arrays_ArrayDeclarationSniff implements PHP_CodeSniffer_Sniff
             if ($tokens[$index['arrow']]['column'] !== $arrowStart)
             {
                 $expected = ($arrowStart - (strlen($index['index_content']) + $tokens[$index['index']]['column']));
-                $found    = ($tokens[$index['arrow']]['column'] - (strlen($index['index_content']) + $tokens[$index['index']]['column']));
+                $found    = ($tokens[$index['arrow']]['column']
+                            - (strlen($index['index_content'])
+                            + $tokens[$index['index']]['column']));
                 $error    = 'Array double arrow not aligned correctly; expected %s space(s) but found %s';
-                $data     = [
-                             $expected,
-                             $found,
-                            ];
+                $data     = [$expected, $found];
 
                 $fix = $phpcsFile->addFixableError($error, $index['arrow'], 'DoubleArrowNotAligned', $data);
                 if ($fix === true)
@@ -917,8 +917,8 @@ class YaAPI_Sniffs_Arrays_ArrayDeclarationSniff implements PHP_CodeSniffer_Sniff
             {
                 $expected = ($valueStart - ($tokens[$index['arrow']]['length'] + $tokens[$index['arrow']]['column']));
                 $found    = ($tokens[$index['value']]['column']
-                				- ($tokens[$index['arrow']]['length']
-                				+ $tokens[$index['arrow']]['column']));
+                                - ($tokens[$index['arrow']]['length']
+                                + $tokens[$index['arrow']]['column']));
                 
                 if ($found < 0)
                 {

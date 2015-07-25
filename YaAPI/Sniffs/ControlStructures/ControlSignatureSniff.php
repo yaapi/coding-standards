@@ -264,7 +264,8 @@ class YaAPI_Sniffs_ControlStructures_ControlSignatureSniff implements PHP_CodeSn
         // Own line for do, else, elseif, catch and no white space after closing brace
         $found = 0;
         
-        if ($tokens[($closer + 1)]['code'] === T_WHITESPACE && $tokens[($closer + 1)]['content'] !== $phpcsFile->eolChar)
+        if ($tokens[($closer + 1)]['code'] === T_WHITESPACE
+                && $tokens[($closer + 1)]['content'] !== $phpcsFile->eolChar)
         {
             $found = strlen($tokens[($closer + 1)]['content']);
         }
