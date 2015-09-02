@@ -15,12 +15,12 @@
  * @author    Greg Sherwood <gsherwood@squiz.net>
  * @copyright 2006-2014 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
- * @version   Release: @package_version@
  * @link      http://pear.php.net/package/PHP_CodeSniffer
+ *
+ * @since   1.0
  */
 class YaAPI_Sniffs_ControlStructures_ControlSignatureSniff implements PHP_CodeSniffer_Sniff
 {
-
     /**
      * A list of tokenizers this sniff supports.
      *
@@ -30,7 +30,6 @@ class YaAPI_Sniffs_ControlStructures_ControlSignatureSniff implements PHP_CodeSn
                                    'PHP',
                                    'JS',
                                   ];
-
 
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -42,26 +41,25 @@ class YaAPI_Sniffs_ControlStructures_ControlSignatureSniff implements PHP_CodeSn
         return [
                 T_TRY,
                 T_CATCH,
+                T_FINALLY,
                 T_DO,
                 T_WHILE,
                 T_FOR,
-                T_IF,
                 T_FOREACH,
+                T_IF,
                 T_ELSE,
                 T_ELSEIF,
                 T_SWITCH,
                ];
     }
 
-
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param PHP_CodeSniffer_File $phpcsFile The file being scanned.
-     * @param int                  $stackPtr  The position of the current token in the
-     *                                        stack passed in $tokens.
+     * @param   PHP_CodeSniffer_File  $phpcsFile  The file being scanned.
+     * @param   int                   $stackPtr   The position of the current token in the stack passed in $tokens.
      *
-     * @return void
+     * @return  void
      */
     public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
     {
@@ -74,6 +72,7 @@ class YaAPI_Sniffs_ControlStructures_ControlSignatureSniff implements PHP_CodeSn
 
         // Single space after the keyword.
         $found = 1;
+
         if ($tokens[($stackPtr + 1)]['code'] !== T_WHITESPACE)
         {
             $found = 0;
@@ -91,16 +90,19 @@ class YaAPI_Sniffs_ControlStructures_ControlSignatureSniff implements PHP_CodeSn
         }
 
         if ($found !== 1
-                && $tokens[($stackPtr)]['code'] !== T_ELSE
-                && $tokens[($stackPtr)]['code'] !== T_TRY)
+            && $tokens[($stackPtr)]['code'] !== T_ELSE
+            && $tokens[($stackPtr)]['code'] !== T_TRY
+            && $tokens[($stackPtr)]['code'] !== T_DO
+            && $tokens[($stackPtr)]['code'] !== T_FINALLY
+        )
         {
             $error = 'Expected 1 space after %s keyword; %s found';
             $data  = [
                       strtoupper($tokens[$stackPtr]['content']),
                       $found,
                      ];
+            $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'SpaceAfterKeyword', $data);
 
-            $fix = $phpcsFile->addFixableError($error, $stackPtr, 'SpaceAfterKeyword', $data);
             if ($fix === true)
             {
                 if ($found === 0)
@@ -114,51 +116,11 @@ class YaAPI_Sniffs_ControlStructures_ControlSignatureSniff implements PHP_CodeSn
             }
         }
 
-        // Single space after closing parenthesis.
-        /** if (isset($tokens[$stackPtr]['parenthesis_closer']) === true
-        && isset($tokens[$stackPtr]['scope_opener']) === true
-        ) {
-        $closer  = $tokens[$stackPtr]['parenthesis_closer'];
-        $opener  = $tokens[$stackPtr]['scope_opener'];
-        $content = $phpcsFile->getTokensAsString(($closer + 1), ($opener - $closer - 1));
-
-        if ($content !== ' ') {
-        $error = 'Expected 1 space after closing parenthesis; found %s';
-        if (trim($content) === '') {
-        $found = strlen($content);
-        } else {
-        $found = '"'.str_replace($phpcsFile->eolChar, '\n', $content).'"';
-        }
-
-        $fix = $phpcsFile->addFixableError($error, $closer, 'SpaceAfterCloseParenthesis', array($found));
-        if ($fix === true) {
-        if ($closer === ($opener - 1)) {
-        $phpcsFile->fixer->addContent($closer, ' ');
-        } else {
-        $phpcsFile->fixer->beginChangeset();
-        $phpcsFile->fixer->addContent($closer, ' '.$tokens[$opener]['content']);
-        $phpcsFile->fixer->replaceToken($opener, '');
-
-        if ($tokens[$opener]['line'] !== $tokens[$closer]['line']) {
-        $next = $phpcsFile->findNext(T_WHITESPACE, ($opener + 1), null, true);
-        if ($tokens[$next]['line'] !== $tokens[$opener]['line']) {
-        for ($i = ($opener + 1); $i < $next; $i++) {
-        $phpcsFile->fixer->replaceToken($i, '');
-        }
-        }
-        }
-
-        $phpcsFile->fixer->endChangeset();
-        }
-        }
-        }//end if
-        }//end if
-        **/
-
         // Single newline after opening brace.
         if (isset($tokens[$stackPtr]['scope_opener']) === true)
         {
             $opener = $tokens[$stackPtr]['scope_opener'];
+
             for ($next = ($opener + 1); $next < $phpcsFile->numTokens; $next++)
             {
                 $code = $tokens[$next]['code'];
@@ -171,7 +133,7 @@ class YaAPI_Sniffs_ControlStructures_ControlSignatureSniff implements PHP_CodeSn
                 // Skip all empty tokens on the same line as the opener.
                 if ($tokens[$next]['line'] === $tokens[$opener]['line']
                     && (isset(PHP_CodeSniffer_Tokens::$emptyTokens[$code]) === true
-                        || $code === T_CLOSE_TAG)
+                    || $code === T_CLOSE_TAG)
                 )
                 {
                     continue;
@@ -183,14 +145,17 @@ class YaAPI_Sniffs_ControlStructures_ControlSignatureSniff implements PHP_CodeSn
             }
 
             $found = ($tokens[$next]['line'] - $tokens[$opener]['line']);
+
             if ($found !== 1)
             {
                 $error = 'Expected 1 newline after opening brace; %s found';
                 $data  = [$found];
                 $fix   = $phpcsFile->addFixableError($error, $opener, 'NewlineAfterOpenBrace', $data);
+
                 if ($fix === true)
                 {
                     $phpcsFile->fixer->beginChangeset();
+
                     for ($i = ($opener + 1); $i < $next; $i++)
                     {
                         if ($found > 0 && $tokens[$i]['line'] === $tokens[$next]['line'])
@@ -208,9 +173,10 @@ class YaAPI_Sniffs_ControlStructures_ControlSignatureSniff implements PHP_CodeSn
         }
         elseif ($tokens[$stackPtr]['code'] === T_WHILE)
         {
-                // Zero spaces after parenthesis closer.
-                $closer = $tokens[$stackPtr]['parenthesis_closer'];
-                $found  = 0;
+            // Zero spaces after parenthesis closer.
+            $closer = $tokens[$stackPtr]['parenthesis_closer'];
+            $found  = 0;
+
             if ($tokens[($closer + 1)]['code'] === T_WHITESPACE)
             {
                 if (strpos($tokens[($closer + 1)]['content'], $phpcsFile->eolChar) !== false)
@@ -219,7 +185,7 @@ class YaAPI_Sniffs_ControlStructures_ControlSignatureSniff implements PHP_CodeSn
                 }
                 else
                 {
-                        $found = strlen($tokens[($closer + 1)]['content']);
+                    $found = strlen($tokens[($closer + 1)]['content']);
                 }
             }
 
@@ -228,6 +194,7 @@ class YaAPI_Sniffs_ControlStructures_ControlSignatureSniff implements PHP_CodeSn
                 $error = 'Expected 0 spaces before semicolon; %s found';
                 $data  = [$found];
                 $fix   = $phpcsFile->addFixableError($error, $closer, 'SpaceBeforeSemicolon', $data);
+
                 if ($fix === true)
                 {
                     $phpcsFile->fixer->replaceToken(($closer + 1), '');
@@ -251,6 +218,7 @@ class YaAPI_Sniffs_ControlStructures_ControlSignatureSniff implements PHP_CodeSn
         )
         {
             $closer = $phpcsFile->findPrevious(PHP_CodeSniffer_Tokens::$emptyTokens, ($stackPtr - 1), null, true);
+
             if ($closer === false || $tokens[$closer]['code'] !== T_CLOSE_CURLY_BRACKET)
             {
                 return;
@@ -260,63 +228,38 @@ class YaAPI_Sniffs_ControlStructures_ControlSignatureSniff implements PHP_CodeSn
         {
             return;
         }
-        
+
         // Own line for do, else, elseif, catch and no white space after closing brace
         $found = 0;
-        
+
         if ($tokens[($closer + 1)]['code'] === T_WHITESPACE
-                && $tokens[($closer + 1)]['content'] !== $phpcsFile->eolChar)
+            && $tokens[($closer + 1)]['content'] !== $phpcsFile->eolChar
+        )
         {
             $found = strlen($tokens[($closer + 1)]['content']);
         }
-        
+
         if (0 !== $found)
         {
             $error = 'Expected 0 space after closing brace; %s found';
             $data  = [$found];
             $fix   = $phpcsFile->addFixableError($error, $closer, 'SpaceAfterCloseBrace', $data);
-            
+
             if (true === $fix)
             {
                 $phpcsFile->fixer->replaceToken(($closer + 1), $phpcsFile->eolChar);
             }
         }
-        
+
         if ($tokens[($closer + 1)]['content'] !== $phpcsFile->eolChar && 0 === $found)
         {
             $error = 'Definition of do,else,elseif,catch must be on their own line.';
             $fix   = $phpcsFile->addFixableError($error, $closer, 'NewLineAfterCloseBrace');
-            
+
             if (true === $fix)
             {
                 $phpcsFile->fixer->addContent($closer, $phpcsFile->eolChar);
             }
         }
-
-        // Single space after closing brace.
-        /** $found = 1;
-        if ($tokens[($closer + 1)]['code'] !== T_WHITESPACE) {
-            $found = 0;
-        } else if ($tokens[($closer + 1)]['content'] !== ' ') {
-            if (strpos($tokens[($closer + 1)]['content'], $phpcsFile->eolChar) !== false) {
-                $found = 'newline';
-            } else {
-                $found = strlen($tokens[($closer + 1)]['content']);
-            }
-        }
-
-        if ($found !== 1) {
-            $error = 'Expected 1 space after closing brace; %s found';
-            $data  = array($found);
-            $fix   = $phpcsFile->addFixableError($error, $closer, 'SpaceAfterCloseBrace', $data);
-            if ($fix === true) {
-                if ($found === 0) {
-                    $phpcsFile->fixer->addContent($closer, ' ');
-                } else {
-                    $phpcsFile->fixer->replaceToken(($closer + 1), ' ');
-                }
-            }
-        }**/
-
     }//end process()
 }//end class

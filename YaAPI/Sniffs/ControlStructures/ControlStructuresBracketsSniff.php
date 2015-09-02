@@ -11,14 +11,15 @@
  *
  * Checks if the declaration of control structures is correct.
  * Curly brackets must be on a line by their own.
+ *
+ * @since   1.0
  */
 class YaAPI_Sniffs_ControlStructures_ControlStructuresBracketsSniff implements PHP_CodeSniffer_Sniff
 {
-
     /**
      * The number of spaces code should be indented.
      *
-     * @var int
+     * @var integer
      */
     public $indent = 4;
 
@@ -41,19 +42,18 @@ class YaAPI_Sniffs_ControlStructures_ControlStructuresBracketsSniff implements P
                 T_WHILE,
                 T_TRY,
                 T_CATCH,
+                T_FINALLY,
                ];
-
     }
 
 
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param PHP_CodeSniffer_File $phpcsFile The file being scanned.
-     * @param int                  $stackPtr  The position of the current token in the
-     *                                        stack passed in $tokens.
+     * @param   PHP_CodeSniffer_File  $phpcsFile  The file being scanned.
+     * @param   int                   $stackPtr   The position of the current token in the stack passed in $tokens.
      *
-     * @return void
+     * @return  void
      */
     public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
     {
@@ -64,6 +64,7 @@ class YaAPI_Sniffs_ControlStructures_ControlStructuresBracketsSniff implements P
         {
             $error = 'Possible parse error: %s missing opening or closing brace';
             $phpcsFile->addWarning($error, $stackPtr, 'MissingBrace', $errorData);
+
             return;
         }
 
@@ -71,17 +72,17 @@ class YaAPI_Sniffs_ControlStructures_ControlStructuresBracketsSniff implements P
         $lastContent = $phpcsFile->findPrevious(T_WHITESPACE, ($curlyBrace - 1), $stackPtr, true);
         $classLine   = $tokens[$lastContent]['line'];
         $braceLine   = $tokens[$curlyBrace]['line'];
-        
+
         if ($braceLine === $classLine)
         {
             $phpcsFile->recordMetric($stackPtr, 'Class opening brace placement', 'same line');
             $error = 'Opening brace of a %s must be on the line after the definition';
             $fix   = $phpcsFile->addFixableError($error, $curlyBrace, 'OpenBraceNewLine', $errorData);
-            
+
             if (true === $fix)
             {
                 $phpcsFile->fixer->beginChangeset();
-                
+
                 if (T_WHITESPACE === $tokens[($curlyBrace - 1)]['code'])
                 {
                     $phpcsFile->fixer->replaceToken(($curlyBrace - 1), '');
@@ -106,11 +107,11 @@ class YaAPI_Sniffs_ControlStructures_ControlStructuresBracketsSniff implements P
                           ($braceLine - $classLine - 1),
                          ];
                 $fix   = $phpcsFile->addFixableError($error, $curlyBrace, 'OpenBraceWrongLine', $data);
-                
+
                 if (true === $fix)
                 {
                     $phpcsFile->fixer->beginChangeset();
-                    
+
                     for ($i = ($curlyBrace - 1); $i > $lastContent; $i--)
                     {
                         if ($tokens[$i]['line'] === ($tokens[$curlyBrace]['line'] + 1))
@@ -132,7 +133,7 @@ class YaAPI_Sniffs_ControlStructures_ControlStructuresBracketsSniff implements P
         {
             $error = 'Opening %s brace must be on a line by itself.';
             $fix   = $phpcsFile->addFixableError($error, $curlyBrace, 'OpenBraceNotAlone', $errorData);
-            
+
             if (true === $fix)
             {
                 $phpcsFile->fixer->addNewline($curlyBrace);
@@ -142,7 +143,7 @@ class YaAPI_Sniffs_ControlStructures_ControlStructuresBracketsSniff implements P
         if (T_WHITESPACE === $tokens[($curlyBrace - 1)]['code'])
         {
             $prevContent = $tokens[($curlyBrace - 1)]['content'];
-            
+
             if ($prevContent === $phpcsFile->eolChar)
             {
                 $spaces = 0;
@@ -154,17 +155,20 @@ class YaAPI_Sniffs_ControlStructures_ControlStructuresBracketsSniff implements P
             }
 
             $expected = ($tokens[$stackPtr]['level'] * $this->indent);
-            
+
             if ($spaces !== $expected)
             {
                 $error = 'Expected %s spaces before opening brace; %s found';
-                $data  = [$expected, $spaces];
+                $data  = [
+                          $expected,
+                          $spaces,
+                         ];
                 $fix   = $phpcsFile->addFixableError($error, $curlyBrace, 'SpaceBeforeBrace', $data);
-                
+
                 if ($fix === true)
                 {
                     $indent = str_repeat(' ', $expected);
-                    
+
                     if ($spaces === 0)
                     {
                         $phpcsFile->fixer->addContentBefore($curlyBrace, $indent);
