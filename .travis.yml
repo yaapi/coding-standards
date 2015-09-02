@@ -1,3 +1,5 @@
+sudo: false
+
 language: php
 
 php:
@@ -14,11 +16,11 @@ matrix:
 before_script:
   - composer self-update
   - composer install --prefer-source --no-progress --no-interaction
-  - ./vendor/bin/phpcs --config-set installed_paths YaAPI
+  - ./vendor/bin/phpcs --config-set installed_paths $(pwd)
 
 script:
   - ./vendor/bin/phpunit --filter YaAPI vendor/squizlabs/php_codesniffer/tests/AllTests.php
-  - ./vendor/bin/phpcs -sp --extensions=php --ignore=*/vendor/* --standard=YaAPI/ruleset.xml */
+  - ./vendor/bin/phpcs -sp --extensions=php --ignore=*/vendor/* --standard=YaAPI */
 
 notifications:
   email: false
