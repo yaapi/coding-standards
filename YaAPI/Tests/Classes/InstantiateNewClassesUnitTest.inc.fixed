@@ -18,13 +18,13 @@ class MyClass
 }
 
 // Should throw an error.
-$a = new MyClass();
+$a = new MyClass;
 
 // Should be fine.
 $b = new MyClass('new-value');
 
 // Should throw an error.
-$a = (new MyClass())->getValue();
+$a = (new MyClass)->getValue();
 
 // Should be fine.
 $b = (new MyClass('new-value'))->getValue();

@@ -14,9 +14,10 @@ matrix:
 before_script:
   - composer self-update
   - composer install --prefer-source --no-progress --no-interaction
+  - ./vendor/bin/phpcs --config-set installed_paths YaAPI
 
 script:
-  - ./vendor/bin/phpunit vendor/squizlabs/php_codesniffer/tests/AllTests.php
+  - ./vendor/bin/phpunit --filter YaAPI vendor/squizlabs/php_codesniffer/tests/AllTests.php
   - ./vendor/bin/phpcs -sp --extensions=php --ignore=*/vendor/* --standard=YaAPI/ruleset.xml */
 
 notifications:
