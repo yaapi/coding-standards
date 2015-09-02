@@ -124,6 +124,11 @@ class YaAPI_Sniffs_WhiteSpace_MemberVarSpacingSniff extends Squiz_Sniffs_WhiteSp
                         continue;
                     }
 
+                    if ($tokens[$i]['line'] === $tokens[$first]['line'])
+                    {
+                        break;
+                    }
+
                     $phpcsFile->fixer->replaceToken($i, '');
                 }
 
