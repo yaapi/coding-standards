@@ -27,3 +27,20 @@ class MyClass
 
     public $val3;
 }
+
+class MyClass
+{
+
+
+
+    /**
+     * Var description.
+     *
+     * @var    integer
+     * @since  1.0
+     */
+    public $value = 1;
+
+    public $val = null;
+    public $val1;
+}
