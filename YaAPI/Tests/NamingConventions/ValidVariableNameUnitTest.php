@@ -1,17 +1,17 @@
 <?php
 /**
- * @name        ValidVariableUnitTest
+ * @name        ValidVariableNameUnitTest
  * @package     Yaapi\Coding-Standards
  * @copyright   Copyright (C) 2015 http://joomworker.com - All rights reserved.
  * @license     GNU LESSER GENERAL PUBLIC LICENSE Version 2.1 or later - http://www.gnu.org
  */
 
 /**
- * ValidVariableUnitTest
+ * ValidVariableNameUnitTest
  *
  * @since   1.0
  */
-class YaAPI_Tests_NamingConventions_ValidVariableUnitTest extends AbstractSniffUnitTest
+class YaAPI_Tests_NamingConventions_ValidVariableNameUnitTest extends AbstractSniffUnitTest
 {
     /**
      * Returns the lines where errors should occur.
@@ -24,7 +24,7 @@ class YaAPI_Tests_NamingConventions_ValidVariableUnitTest extends AbstractSniffU
     public function getErrorList()
     {
         return [
-                4  => 1,
+                4 => 1,
                 6 => 1,
                ];
     }
