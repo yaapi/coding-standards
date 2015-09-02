@@ -6,6 +6,11 @@
  * @license     GNU LESSER GENERAL PUBLIC LICENSE Version 2.1 or later - http://www.gnu.org
  */
 
+/**
+ * InstantiateNewClassesUnitTest
+ *
+ * @since   1.0
+ */
 class YaAPI_Tests_Classes_InstantiateNewClassesUnitTest extends AbstractSniffUnitTest
 {
     /**
