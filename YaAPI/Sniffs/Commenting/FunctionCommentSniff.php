@@ -379,10 +379,10 @@ class YaAPI_Sniffs_Commenting_FunctionCommentSniff extends PEAR_Sniffs_Commentin
      */
     private function paramCommentsAlign($param, $previousParam)
     {
-        $paramStringLength         = strlen($param['type']) + $param['type_space'] + strlen($param['var']) + $param['var_space'];
-        $previousParamStringLength = strlen($previousParam['type']) + $previousParam['type_space'] + strlen($previousParam['var']) + $previousParam['var_space'];
+        $stringLength = strlen($param['type']) + $param['type_space'] + strlen($param['var']) + $param['var_space'];
+        $prev         = strlen($previousParam['type']) + $previousParam['type_space'] + strlen($previousParam['var']) + $previousParam['var_space'];
 
-        return $paramStringLength === $previousParamStringLength;
+        return $stringLength === $prev;
     }
 
     /**

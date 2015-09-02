@@ -62,8 +62,12 @@ class YaAPI_Sniffs_ControlStructures_ControlStructuresBracketsSniff implements P
 
         if (false === isset($tokens[$stackPtr]['scope_opener']))
         {
-            $error = 'Possible parse error: %s missing opening or closing brace';
-            $phpcsFile->addWarning($error, $stackPtr, 'MissingBrace', $errorData);
+            // @todo sort while thing...
+            if ($tokens[$stackPtr]['code'] !== T_WHILE)
+            {
+                $error = 'Possible parse error: %s missing opening or closing brace';
+                $phpcsFile->addWarning($error, $stackPtr, 'MissingBrace', $errorData);
+            }
 
             return;
         }

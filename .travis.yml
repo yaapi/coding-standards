@@ -10,7 +10,6 @@ php:
 matrix:
   allow_failures:
     - php: hhvm
-    - php: 7.0
 
 before_script:
   - composer self-update
@@ -18,7 +17,7 @@ before_script:
 
 script:
   - ./vendor/bin/phpunit
-  - ./vendor/bin/phpcs -p --extensions=php --ignore=*/vendor/* --standard=YaAPI/ruleset.xml */
+  - ./vendor/bin/phpcs -sp --extensions=php --ignore=*/vendor/* --standard=YaAPI/ruleset.xml */
 
 notifications:
   email: false
