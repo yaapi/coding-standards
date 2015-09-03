@@ -41,6 +41,6 @@ class YaAPI_Tests_ControlStructures_ControlStructuresBracketsUnitTest extends Ab
      */
     public function getWarningList()
     {
-        return [5  => 1];
+        return [5 => 1];
     }
 }

@@ -107,11 +107,15 @@ class YaAPI_Sniffs_ControlStructures_ControlSignatureSniff implements PHP_CodeSn
             {
                 if ($found === 0)
                 {
+                    $phpcsFile->fixer->beginChangeset();
                     $phpcsFile->fixer->addContent($stackPtr, ' ');
+                    $phpcsFile->fixer->endChangeset();
                 }
                 else
                 {
+                    $phpcsFile->fixer->beginChangeset();
                     $phpcsFile->fixer->replaceToken(($stackPtr + 1), ' ');
+                    $phpcsFile->fixer->endChangeset();
                 }
             }
         }
@@ -197,7 +201,9 @@ class YaAPI_Sniffs_ControlStructures_ControlSignatureSniff implements PHP_CodeSn
 
                 if ($fix === true)
                 {
+                    $phpcsFile->fixer->beginChangeset();
                     $phpcsFile->fixer->replaceToken(($closer + 1), '');
+                    $phpcsFile->fixer->endChangeset();
                 }
             }
         }//end if
@@ -247,7 +253,9 @@ class YaAPI_Sniffs_ControlStructures_ControlSignatureSniff implements PHP_CodeSn
 
             if (true === $fix)
             {
+                $phpcsFile->fixer->beginChangeset();
                 $phpcsFile->fixer->replaceToken(($closer + 1), '');
+                $phpcsFile->fixer->endChangeset();
             }
         }
 
@@ -258,7 +266,9 @@ class YaAPI_Sniffs_ControlStructures_ControlSignatureSniff implements PHP_CodeSn
 
             if (true === $fix)
             {
-                $phpcsFile->fixer->addNewLine($closer);
+                $phpcsFile->fixer->beginChangeset();
+                $phpcsFile->fixer->addContent($closer, $phpcsFile->eolChar);
+                $phpcsFile->fixer->endChangeset();
             }
         }
     }//end process()

@@ -65,8 +65,8 @@ $b = 2;
     {
         echo 'muh';
     }
-    
-    
+
+
     // NewLineAfterCloseBrace
     if ($a === 7)
     {
