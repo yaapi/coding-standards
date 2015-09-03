@@ -247,7 +247,7 @@ class YaAPI_Sniffs_ControlStructures_ControlSignatureSniff implements PHP_CodeSn
 
             if (true === $fix)
             {
-                $phpcsFile->fixer->replaceToken(($closer + 1), $phpcsFile->eolChar);
+                $phpcsFile->fixer->replaceToken(($closer + 1), '');
             }
         }
 
@@ -258,7 +258,7 @@ class YaAPI_Sniffs_ControlStructures_ControlSignatureSniff implements PHP_CodeSn
 
             if (true === $fix)
             {
-                $phpcsFile->fixer->addContent($closer, $phpcsFile->eolChar);
+                $phpcsFile->fixer->addNewLine($closer);
             }
         }
     }//end process()

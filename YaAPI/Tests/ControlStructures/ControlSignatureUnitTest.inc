@@ -21,7 +21,7 @@ $b = 2;
     }
     catch(Exception $e)
     {
-        
+        echo $e->getMessage();
     }
 
     while($a < $b)
@@ -39,7 +39,7 @@ $b = 2;
         echo true;
     }
 
-    while($a < $b)
+    while ($a < $b)
     {
 
 
