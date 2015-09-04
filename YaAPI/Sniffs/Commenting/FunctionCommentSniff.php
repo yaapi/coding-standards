@@ -350,24 +350,6 @@ class YaAPI_Sniffs_Commenting_FunctionCommentSniff extends PEAR_Sniffs_Commentin
 
             $previousParam = $param;
         }
-
-        /*$realNames = [];
-
-        foreach ($realParams as $realParam)
-        {
-            $realNames[] = $realParam['name'];
-        }
-
-        // Report missing comments.
-        $diff = array_diff($realNames, $foundParams);
-
-        foreach ($diff as $neededParam)
-        {
-            $error = 'Doc comment for parameter "%s" missing.';
-            $data  = [$neededParam];
-            $phpcsFile->addError($error, $commentStart, 'MissingParamTag', $data);
-        }*/
-
     }
 
     /**

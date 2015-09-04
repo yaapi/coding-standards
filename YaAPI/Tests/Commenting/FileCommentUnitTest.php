@@ -23,9 +23,7 @@ class YaAPI_Tests_Commenting_FileCommentUnitTest extends AbstractSniffUnitTest
      */
     public function getErrorList()
     {
-        return [
-                5 => 1,
-               ];
+        return [5 => 1];
     }
 
     /**
