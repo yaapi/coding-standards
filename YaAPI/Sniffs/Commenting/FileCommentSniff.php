@@ -193,20 +193,20 @@ class YaAPI_Sniffs_Commenting_FileCommentSniff extends PEAR_Sniffs_Commenting_Fi
                 {
                     if ($matches[3] !== '-')
                     {
-                        $error = 'A hyphen must be used between the earliest and latest year';
+                        $error = 'A hyphen must be used between the earliest and latest year.';
                         $phpcsFile->addError($error, $tag, 'CopyrightHyphen');
                     }
 
                     if ($matches[4] !== '' && $matches[4] < $matches[1])
                     {
-                        $error = "Invalid year span \"$matches[1]$matches[3]$matches[4]\" found; consider \"$matches[4]-$matches[1]\" instead";
+                        $error = "Invalid year span \"$matches[1]$matches[3]$matches[4]\" found; consider \"$matches[4]-$matches[1]\" instead.";
                         $phpcsFile->addWarning($error, $tag, 'InvalidCopyright');
                     }
                 }
             }
             else
             {
-                $error = '@copyright tag must contain a year and the name of the copyright holder';
+                $error = '@copyright tag must contain a year and the name of the copyright holder.';
                 $phpcsFile->addError($error, $tag, 'IncompleteCopyright');
             }
         }//end foreach

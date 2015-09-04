@@ -22,6 +22,13 @@
 class YaAPI_Sniffs_ControlStructures_ControlSignatureSniff implements PHP_CodeSniffer_Sniff
 {
     /**
+     * The number of spaces code should be indented.
+     *
+     * @var integer
+     */
+    public $indent = 4;
+
+    /**
      * A list of tokenizers this sniff supports.
      *
      * @var array
@@ -107,15 +114,11 @@ class YaAPI_Sniffs_ControlStructures_ControlSignatureSniff implements PHP_CodeSn
             {
                 if ($found === 0)
                 {
-                    $phpcsFile->fixer->beginChangeset();
                     $phpcsFile->fixer->addContent($stackPtr, ' ');
-                    $phpcsFile->fixer->endChangeset();
                 }
                 else
                 {
-                    $phpcsFile->fixer->beginChangeset();
                     $phpcsFile->fixer->replaceToken(($stackPtr + 1), ' ');
-                    $phpcsFile->fixer->endChangeset();
                 }
             }
         }
@@ -201,9 +204,7 @@ class YaAPI_Sniffs_ControlStructures_ControlSignatureSniff implements PHP_CodeSn
 
                 if ($fix === true)
                 {
-                    $phpcsFile->fixer->beginChangeset();
                     $phpcsFile->fixer->replaceToken(($closer + 1), '');
-                    $phpcsFile->fixer->endChangeset();
                 }
             }
         }//end if
@@ -253,23 +254,24 @@ class YaAPI_Sniffs_ControlStructures_ControlSignatureSniff implements PHP_CodeSn
 
             if (true === $fix)
             {
-                $phpcsFile->fixer->beginChangeset();
-                $phpcsFile->fixer->replaceToken(($closer + 1), '');
-                $phpcsFile->fixer->endChangeset();
+                $phpcsFile->fixer->replaceToken(($closer + 1), '' . $phpcsFile->eolChar);
             }
         }
 
         if ($tokens[($closer + 1)]['content'] !== $phpcsFile->eolChar && 0 === $found)
         {
-            $error = 'Definition of do,else,elseif,catch must be on their own line.';
-            $fix   = $phpcsFile->addFixableError($error, $closer, 'NewLineAfterCloseBrace');
+            $error  = 'Definition of do,else,elseif,catch must be on their own line.';
+            $fix    = $phpcsFile->addFixableError($error, $closer, 'NewLineAfterCloseBrace');
+            $blanks = substr($tokens[($closer - 1)]['content'], strpos($tokens[($closer - 1)]['content'], $phpcsFile->eolChar));
+            $spaces = str_repeat(' ', strlen($blanks));
 
             if (true === $fix)
             {
                 $phpcsFile->fixer->beginChangeset();
                 $phpcsFile->fixer->addContent($closer, $phpcsFile->eolChar);
+                $phpcsFile->fixer->addContentBefore(($closer + 1), $spaces);
                 $phpcsFile->fixer->endChangeset();
             }
         }
-    }//end process()
-}//end class
+    }
+}

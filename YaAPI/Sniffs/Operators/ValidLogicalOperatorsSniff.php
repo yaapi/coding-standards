@@ -60,9 +60,7 @@ class YaAPI_Sniffs_Operators_ValidLogicalOperatorsSniff implements PHP_CodeSniff
 
         if (true === $fix)
         {
-            $phpcsFile->fixer->beginChangeset();
             $phpcsFile->fixer->replaceToken($stackPtr, $operators[$operator]);
-            $phpcsFile->fixer->endChangeset();
         }
     }
 }

@@ -102,9 +102,7 @@ class YaAPI_Sniffs_ControlStructures_WhiteSpaceBeforeSniff implements PHP_CodeSn
 
             if ($fix === true)
             {
-                $phpcsFile->fixer->beginChangeset();
                 $phpcsFile->fixer->addNewlineBefore($stackPtr);
-                $phpcsFile->fixer->endChangeset();
             }
         }
     }

@@ -20,7 +20,15 @@ if ($a)
 {echo true;
 }
 
+function muh()
+{
     if ($a)
      {
         echo true;
     }
+
+    if ($a)
+   {
+        echo true;
+    }
+}

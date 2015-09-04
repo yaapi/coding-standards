@@ -140,7 +140,7 @@ class YaAPI_Sniffs_ControlStructures_ControlStructuresBracketsSniff implements P
 
             if (true === $fix)
             {
-                $phpcsFile->fixer->addNewline($curlyBrace);
+                $phpcsFile->fixer->addContent($curlyBrace, $phpcsFile->eolChar);
             }
         }
 

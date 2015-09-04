@@ -61,7 +61,8 @@ $b = 2;
     if ($a === 7)
     {
         echo 'muh';
-    } elseif ($b === 7)
+    } 
+    elseif ($b === 7)
     {
         echo 'muh';
     }

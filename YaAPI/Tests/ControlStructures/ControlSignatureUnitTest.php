@@ -27,12 +27,11 @@ class YaAPI_Tests_ControlStructures_ControlSignatureUnitTest extends AbstractSni
                 13 => 1,
                 22 => 1,
                 27 => 1,
-                36 => 1,
-                42 => 1,
+                37 => 1,
+                43 => 1,
                 57 => 1,
-                61 => 1,
                 64 => 1,
-                74 => 1,
+                75 => 1,
                ];
     }
 

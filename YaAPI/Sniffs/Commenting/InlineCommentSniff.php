@@ -89,9 +89,7 @@ class YaAPI_Sniffs_Commenting_InlineCommentSniff implements PHP_CodeSniffer_Snif
                 $newComment = ltrim($tokens[$stackPtr]['content'], '\//');
                 $newComment = '// ' . $newComment;
 
-                $phpcsFile->fixer->beginChangeset();
                 $phpcsFile->fixer->replaceToken($stackPtr, $newComment);
-                $phpcsFile->fixer->endChangeset();
             }
         }
 
@@ -127,7 +125,9 @@ class YaAPI_Sniffs_Commenting_InlineCommentSniff implements PHP_CodeSniffer_Snif
             }
 
             // Check for a comment on the previous line.
-            if ($tokens[$previous]['line'] === $tokens[$stackPtr]['line'] - 1)
+            if ($tokens[$previous]['line'] === $tokens[$stackPtr]['line'] - 1
+                && '/*' !== substr(ltrim($tokens[$previous]['content']), 0, 2)
+            )
             {
                 $test = trim($tokens[$previous]['content']);
 
@@ -137,9 +137,7 @@ class YaAPI_Sniffs_Commenting_InlineCommentSniff implements PHP_CodeSniffer_Snif
 
                     if ($fix === true)
                     {
-                        $phpcsFile->fixer->beginChangeset();
                         $phpcsFile->fixer->replaceToken($stackPtr, $newComment);
-                        $phpcsFile->fixer->endChangeset();
                     }
                 }
             }
@@ -149,9 +147,7 @@ class YaAPI_Sniffs_Commenting_InlineCommentSniff implements PHP_CodeSniffer_Snif
 
                 if ($fix === true)
                 {
-                    $phpcsFile->fixer->beginChangeset();
                     $phpcsFile->fixer->replaceToken($stackPtr, $newComment);
-                    $phpcsFile->fixer->endChangeset();
                 }
             }
         }
@@ -184,9 +180,7 @@ class YaAPI_Sniffs_Commenting_InlineCommentSniff implements PHP_CodeSniffer_Snif
 
             if ($fix === true)
             {
-                $phpcsFile->fixer->beginChangeset();
-                $phpcsFile->fixer->addNewlineBefore($stackPtr);
-                $phpcsFile->fixer->endChangeset();
+                $phpcsFile->fixer->addContent(($previous + 1), $phpcsFile->eolChar);
             }
         }
 

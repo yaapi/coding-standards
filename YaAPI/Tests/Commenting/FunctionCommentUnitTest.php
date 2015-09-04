@@ -1,17 +1,17 @@
 <?php
 /**
- * @name        ControlStructuresBracketsUnitTest
+ * @name        FunctionCommentUnitTest
  * @package     Yaapi\Coding-Standards
  * @copyright   Copyright (C) 2015 http://joomworker.com - All rights reserved.
  * @license     GNU LESSER GENERAL PUBLIC LICENSE Version 2.1 or later - http://www.gnu.org
  */
 
 /**
- * ControlStructuresBracketsUnitTest
+ * FunctionCommentUnitTest
  *
  * @since   1.0
  */
-class YaAPI_Tests_ControlStructures_ControlStructuresBracketsUnitTest extends AbstractSniffUnitTest
+class YaAPI_Tests_Commenting_FunctionCommentUnitTest extends AbstractSniffUnitTest
 {
     /**
      * Returns the lines where errors should occur.
@@ -24,11 +24,22 @@ class YaAPI_Tests_ControlStructures_ControlStructuresBracketsUnitTest extends Ab
     public function getErrorList()
     {
         return [
-                9  => 1,
-                15 => 1,
-                20 => 1,
-                26 => 1,
-                31 => 1,
+                10  => 1,
+                21  => 1,
+                33  => 1,
+                44  => 1,
+                55  => 1,
+                66  => 1,
+                83  => 1,
+                89  => 1,
+                99  => 1,
+                112 => 1,
+                125 => 1,
+                138 => 1,
+                151 => 1,
+                164 => 1,
+                178 => 1,
+                192 => 1,
                ];
     }
 
@@ -42,6 +53,6 @@ class YaAPI_Tests_ControlStructures_ControlStructuresBracketsUnitTest extends Ab
      */
     public function getWarningList()
     {
-        return [5 => 1];
+        return [];
     }
 }

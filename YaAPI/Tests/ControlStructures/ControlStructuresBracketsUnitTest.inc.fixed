@@ -18,10 +18,18 @@ if ($a)
 
 if ($a)
 {
-    echo true;
+echo true;
 }
+
+function muh()
+{
+    if ($a)
+    {
+        echo true;
+    }
 
     if ($a)
     {
         echo true;
     }
+}
