@@ -63,7 +63,7 @@ class YaAPI_Sniffs_ControlStructures_WhiteSpaceBeforeSniff implements PHP_CodeSn
      */
     public function register()
     {
-        return array(
+        return [
                 T_IF,
                 T_FOR,
                 T_FOREACH,
@@ -72,7 +72,7 @@ class YaAPI_Sniffs_ControlStructures_WhiteSpaceBeforeSniff implements PHP_CodeSn
                 T_WHILE,
                 T_DO,
                 T_RETURN,
-               );
+               ];
     }
 
     /**
@@ -92,14 +92,14 @@ class YaAPI_Sniffs_ControlStructures_WhiteSpaceBeforeSniff implements PHP_CodeSn
             return;
         }
 
-        $prev = $phpcsFile->findPrevious(array(T_SEMICOLON, T_CLOSE_CURLY_BRACKET), ($stackPtr - 1), null, false);
+        $prev = $phpcsFile->findPrevious([T_SEMICOLON, T_CLOSE_CURLY_BRACKET], ($stackPtr - 1), null, false);
 
         if ($tokens[$stackPtr]['line'] - 1 === $tokens[$prev]['line'])
         {
             $error = 'Please consider an empty line before the %s statement;';
-            $data  = array($tokens[$stackPtr]['content']);
+            $data  = [$tokens[$stackPtr]['content']];
             $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'SpaceBefore', $data);
-            
+
             if ($fix === true)
             {
                 $phpcsFile->fixer->addNewlineBefore($stackPtr);

@@ -20,14 +20,14 @@ class YaAPI_Sniffs_Functions_StatementNotFunctionSniff implements PHP_CodeSniffe
      */
     public function register()
     {
-        return array(
-            T_INCLUDE_ONCE,
-            T_REQUIRE_ONCE,
-            T_REQUIRE,
-            T_INCLUDE,
-            T_CLONE,
-            T_ECHO
-        );
+        return [
+                T_INCLUDE_ONCE,
+                T_REQUIRE_ONCE,
+                T_REQUIRE,
+                T_INCLUDE,
+                T_CLONE,
+                T_ECHO,
+               ];
     }
 
     /**
@@ -46,7 +46,7 @@ class YaAPI_Sniffs_Functions_StatementNotFunctionSniff implements PHP_CodeSniffe
         if ($tokens[$nextToken]['code'] === T_OPEN_PARENTHESIS)
         {
             $error = '"%s" is a statement not a function; no parentheses are required';
-            $data  = array($tokens[$stackPtr]['content']);
+            $data  = [$tokens[$stackPtr]['content']];
             $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'BracketsNotRequired', $data);
 
             if ($fix === true)

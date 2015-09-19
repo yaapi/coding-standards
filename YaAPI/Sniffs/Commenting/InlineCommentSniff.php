@@ -26,7 +26,7 @@ class YaAPI_Sniffs_Commenting_InlineCommentSniff implements PHP_CodeSniffer_Snif
      */
     public function register()
     {
-        return array(T_COMMENT);
+        return [T_COMMENT];
     }
 
     /**
@@ -103,13 +103,13 @@ class YaAPI_Sniffs_Commenting_InlineCommentSniff implements PHP_CodeSniffer_Snif
 
             if ($singleLine === true)
             {
-                $data       = array($comment{3});
+                $data       = [$comment{3}];
                 $newComment = ltrim($tokens[$stackPtr]['content'], '\// ');
                 $newComment = '// ' . ucfirst($newComment);
             }
             else
             {
-                $data       = array($comment{2});
+                $data       = [$comment{2}];
                 $padding    = (strlen($tokens[$stackPtr]['content']) - strlen($comment));
                 $padding    = str_repeat(' ', $padding - 2);
                 $newComment = ltrim($comment, '* ');
@@ -153,7 +153,7 @@ class YaAPI_Sniffs_Commenting_InlineCommentSniff implements PHP_CodeSniffer_Snif
         if (isset($tokens[$previous]['line']) && $tokens[$previous]['line'] === $tokens[$stackPtr]['line'])
         {
             $error = 'Please put your comment on a separate line *preceding* your code; found "%s"';
-            $data = array($comment);
+            $data = [$comment];
             $phpcsFile->addError($error, $stackPtr, 'SameLine', $data);
         }
 

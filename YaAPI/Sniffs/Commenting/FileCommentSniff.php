@@ -23,79 +23,79 @@ class YaAPI_Sniffs_Commenting_FileCommentSniff extends PEAR_Sniffs_Commenting_Fi
      *
      * @var array
      */
-    protected $tags = array(
-            '@version'   => array(
-                    'required'       => false,
-                    'allow_multiple' => false,
-                    'order_text'     => 'must be first',
-            ),
-            '@category'   => array(
-                    'required'       => false,
-                    'allow_multiple' => false,
-                    'order_text'     => 'precedes @package',
-            ),
-            '@package'    => array(
-                    'required'       => false,
-                    'allow_multiple' => false,
-                    'order_text'     => 'must follows @category (if used)',
-            ),
-            '@subpackage' => array(
-                    'required'       => false,
-                    'allow_multiple' => false,
-                    'order_text'     => 'must follow @package',
-            ),
-            '@author'     => array(
-                    'required'       => false,
-                    'allow_multiple' => true,
-                    'order_text'     => 'must follow @subpackage (if used) or @package',
-            ),
-            '@copyright'  => array(
-                    'required'       => true,
-                    'allow_multiple' => true,
-                    'order_text'     => 'must follow @author (if used), @subpackage (if used) or @package',
-            ),
-            '@license'    => array(
-                    'required'       => true,
-                    'allow_multiple' => false,
-                    'order_text'     => 'must follow @copyright',
-            ),
-            '@link'       => array(
-                    'required'       => false,
-                    'allow_multiple' => true,
-                    'order_text'     => 'must follow @license',
-            ),
-            '@see'        => array(
-                    'required'       => false,
-                    'allow_multiple' => true,
-                    'order_text'     => 'must follow @link (if used) or @license',
-            ),
-            '@since'      => array(
-                    'required'       => false,
-                    'allow_multiple' => false,
-                    'order_text'     => 'must follows @see (if used), @link (if used) or @license',
-            ),
-            '@deprecated' => array(
-                    'required'       => false,
-                    'allow_multiple' => false,
-                    'order_text'     => 'must follow @since (if used), @see (if used), @link (if used) or @license',
-            ),
-    );
+    protected $tags = [
+                       '@version'    => [
+                                         'required'       => false,
+                                         'allow_multiple' => false,
+                                         'order_text'     => 'must be first',
+                                        ],
+                       '@category'   => [
+                                         'required'       => false,
+                                         'allow_multiple' => false,
+                                         'order_text'     => 'precedes @package',
+                                        ],
+                       '@package'    => [
+                                         'required'       => false,
+                                         'allow_multiple' => false,
+                                         'order_text'     => 'must follows @category (if used)',
+                                        ],
+                       '@subpackage' => [
+                                         'required'       => false,
+                                         'allow_multiple' => false,
+                                         'order_text'     => 'must follow @package',
+                                        ],
+                       '@author'     => [
+                                         'required'       => false,
+                                         'allow_multiple' => true,
+                                         'order_text'     => 'must follow @subpackage (if used) or @package',
+                                        ],
+                       '@copyright'  => [
+                                         'required'       => true,
+                                         'allow_multiple' => true,
+                                         'order_text'     => 'must follow @author (if used), @subpackage (if used) or @package',
+                                        ],
+                       '@license'    => [
+                                         'required'       => true,
+                                         'allow_multiple' => false,
+                                         'order_text'     => 'must follow @copyright',
+                                        ],
+                       '@link'       => [
+                                         'required'       => false,
+                                         'allow_multiple' => true,
+                                         'order_text'     => 'must follow @license',
+                                        ],
+                       '@see'        => [
+                                         'required'       => false,
+                                         'allow_multiple' => true,
+                                         'order_text'     => 'must follow @link (if used) or @license',
+                                        ],
+                       '@since'      => [
+                                         'required'       => false,
+                                         'allow_multiple' => false,
+                                         'order_text'     => 'must follows @see (if used), @link (if used) or @license',
+                                        ],
+                       '@deprecated' => [
+                                         'required'       => false,
+                                         'allow_multiple' => false,
+                                         'order_text'     => 'must follow @since (if used), @see (if used), @link (if used) or @license',
+                                        ],
+                      ];
 
     /**
      * A list of tokenizers this sniff supports.
      *
      * @var array
-    */
-    public $supportedTokenizers = array(
-            'PHP',
-            'JS',
-    );
+     */
+    public $supportedTokenizers = [
+                                   'PHP',
+                                   'JS',
+                                  ];
 
     /**
      * The header comment parser for the current file.
      *
      * @var PHP_CodeSniffer_Comment_Parser_ClassCommentParser
-    */
+     */
     protected $commentParser = null;
 
     /**
@@ -112,7 +112,7 @@ class YaAPI_Sniffs_Commenting_FileCommentSniff extends PEAR_Sniffs_Commenting_Fi
      */
     public function register()
     {
-        return array(T_OPEN_TAG);
+        return [T_OPEN_TAG];
     }//end register()
 
     /**
@@ -143,10 +143,10 @@ class YaAPI_Sniffs_Commenting_FileCommentSniff extends PEAR_Sniffs_Commenting_Fi
             if (strstr($tokens[$commentStart]['content'], 'vim:') !== false)
             {
                 $commentStart = $phpcsFile->findNext(
-                        T_WHITESPACE,
-                        ($commentStart + 1),
-                        null,
-                        true
+                    T_WHITESPACE,
+                    ($commentStart + 1),
+                    null,
+                    true
                 );
             }
         }
@@ -172,7 +172,7 @@ class YaAPI_Sniffs_Commenting_FileCommentSniff extends PEAR_Sniffs_Commenting_Fi
             return ($phpcsFile->numTokens + 1);
         }
         elseif ($commentStart === false
-                || $tokens[$commentStart]['code'] !== T_DOC_COMMENT_OPEN_TAG
+            || $tokens[$commentStart]['code'] !== T_DOC_COMMENT_OPEN_TAG
         )
         {
             $phpcsFile->addError('Missing file doc comment', $errorToken, 'Missing');
@@ -216,8 +216,8 @@ class YaAPI_Sniffs_Commenting_FileCommentSniff extends PEAR_Sniffs_Commenting_Fi
         }
 
         $commentEnd = $tokens[$commentStart]['comment_closer'];
-        $foundTags = array();
-        $tagTokens = array();
+        $foundTags = [];
+        $tagTokens = [];
 
         foreach ($tokens[$commentStart]['comment_tags'] as $tag)
         {
@@ -231,10 +231,10 @@ class YaAPI_Sniffs_Commenting_FileCommentSniff extends PEAR_Sniffs_Commenting_Fi
             if ($this->tags[$name]['allow_multiple'] === false && isset($tagTokens[$name]) === true)
             {
                 $error = 'Only one %s tag is allowed in a %s comment';
-                $data  = array(
-                        $name,
-                        $docBlock,
-                );
+                $data  = [
+                          $name,
+                          $docBlock,
+                         ];
                 $phpcsFile->addError($error, $tag, 'Duplicate' . ucfirst(substr($name, 1)) . 'Tag', $data);
             }
 
@@ -245,10 +245,10 @@ class YaAPI_Sniffs_Commenting_FileCommentSniff extends PEAR_Sniffs_Commenting_Fi
             if ($string === false || $tokens[$string]['line'] !== $tokens[$tag]['line'])
             {
                 $error = 'Content missing for %s tag in %s comment';
-                $data  = array(
-                        $name,
-                        $docBlock,
-                );
+                $data  = [
+                          $name,
+                          $docBlock,
+                         ];
                 $phpcsFile->addError($error, $tag, 'Empty' . ucfirst(substr($name, 1)) . 'Tag', $data);
                 continue;
             }
@@ -264,10 +264,10 @@ class YaAPI_Sniffs_Commenting_FileCommentSniff extends PEAR_Sniffs_Commenting_Fi
                 if ($tagData['required'] === true)
                 {
                     $error = 'Missing %s tag in %s comment';
-                    $data  = array(
-                            $tag,
-                            $docBlock,
-                    );
+                    $data  = [
+                              $tag,
+                              $docBlock,
+                             ];
                     $phpcsFile->addError($error, $commentEnd, 'Missing' . ucfirst(substr($tag, 1)) . 'Tag', $data);
                 }
 
@@ -280,7 +280,7 @@ class YaAPI_Sniffs_Commenting_FileCommentSniff extends PEAR_Sniffs_Commenting_Fi
                 if (method_exists($this, $method) === true)
                 {
                     // Process each tag if a method is defined.
-                    call_user_func(array($this, $method), $phpcsFile, $tagTokens[$tag]);
+                    call_user_func([$this, $method], $phpcsFile, $tagTokens[$tag]);
                 }
             }
 
@@ -292,10 +292,10 @@ class YaAPI_Sniffs_Commenting_FileCommentSniff extends PEAR_Sniffs_Commenting_Fi
             if ($foundTags[$pos] !== $tag)
             {
                 $error = 'The tag in position %s should be the %s tag';
-                $data  = array(
-                        ($pos + 1),
-                        $tag,
-                );
+                $data  = [
+                          ($pos + 1),
+                          $tag,
+                         ];
                 $phpcsFile->addError($error, $tokens[$commentStart]['comment_tags'][$pos], ucfirst(substr($tag, 1)) . 'TagOrder', $data);
             }
 
@@ -348,10 +348,10 @@ class YaAPI_Sniffs_Commenting_FileCommentSniff extends PEAR_Sniffs_Commenting_Fi
 
                 $error     = 'Category name "%s" is not valid; consider "%s" instead';
                 $validName = trim($newName, '_');
-                $data      = array(
-                        $content,
-                        $validName,
-                );
+                $data      = [
+                              $content,
+                              $validName,
+                             ];
                 $phpcsFile->addError($error, $tag, 'InvalidCategory', $data);
             }
         }//end foreach
@@ -401,10 +401,10 @@ class YaAPI_Sniffs_Commenting_FileCommentSniff extends PEAR_Sniffs_Commenting_Fi
 
             $error     = 'Package name "%s" is not valid; consider "%s" instead';
             $validName = trim($newName, '_');
-            $data      = array(
-                    $content,
-                    $validName,
-            );
+            $data      = [
+                          $content,
+                          $validName,
+                         ];
             $phpcsFile->addError($error, $tag, 'InvalidPackage', $data);
         }//end foreach
     }//end processPackage()
@@ -467,8 +467,8 @@ class YaAPI_Sniffs_Commenting_FileCommentSniff extends PEAR_Sniffs_Commenting_Fi
             $localMiddle = $local . '.\w';
 
             if (preg_match(
-                    '/^([^<]*)\s+<([' . $local . ']([' . $localMiddle . ']*[' . $local . '])*@[\da-zA-Z][-.\w]*[\da-zA-Z]\.[a-zA-Z]{2,7})>$/',
-                    $content
+                '/^([^<]*)\s+<([' . $local . ']([' . $localMiddle . ']*[' . $local . '])*@[\da-zA-Z][-.\w]*[\da-zA-Z]\.[a-zA-Z]{2,7})>$/',
+                $content
             ) === 0)
             {
                 $error = 'Content of the @author tag must be in the form "Display Name <username@example.com>"';
@@ -498,7 +498,7 @@ class YaAPI_Sniffs_Commenting_FileCommentSniff extends PEAR_Sniffs_Commenting_Fi
             }
 
             $content = $tokens[($tag + 2)]['content'];
-            $matches = array();
+            $matches = [];
 
             if (preg_match('/^.*?([0-9]{4})((.{1})([0-9]{4}))? (.+)$/', $content, $matches) !== 0)
             {
@@ -547,7 +547,7 @@ class YaAPI_Sniffs_Commenting_FileCommentSniff extends PEAR_Sniffs_Commenting_Fi
             }
 
             $content = $tokens[($tag + 2)]['content'];
-            $matches = array();
+            $matches = [];
             preg_match('/^([^\s]+)\s+(.*)/', $content, $matches);
 
             if (count($matches) !== 3)
@@ -581,13 +581,13 @@ class YaAPI_Sniffs_Commenting_FileCommentSniff extends PEAR_Sniffs_Commenting_Fi
             $content = $tokens[($tag + 2)]['content'];
 
             if (strstr($content, 'CVS:') === false
-                    && strstr($content, 'SVN:') === false
-                    && strstr($content, 'GIT:') === false
-                    && strstr($content, 'HG:') === false
+                && strstr($content, 'SVN:') === false
+                && strstr($content, 'GIT:') === false
+                && strstr($content, 'HG:') === false
             )
             {
                 $error = 'Invalid version "%s" in file comment; consider "CVS: <cvs_id>" or "SVN: <svn_id>" or "GIT: <git_id>" or "HG: <hg_id>" instead.';
-                $data  = array($content);
+                $data  = [$content];
                 $phpcsFile->addWarning($error, $tag, 'InvalidVersion', $data);
             }
         }
