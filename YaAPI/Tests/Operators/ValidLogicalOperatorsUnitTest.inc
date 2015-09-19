@@ -19,7 +19,7 @@ if ($a and $c or $b)
 }
 
 if ($x = $a or $c === 3
-        and $b === 2
+    and $b === 2
 )
 {
     echo 'muh';

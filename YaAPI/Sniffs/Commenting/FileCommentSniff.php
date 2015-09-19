@@ -586,7 +586,7 @@ class YaAPI_Sniffs_Commenting_FileCommentSniff extends PEAR_Sniffs_Commenting_Fi
                     && strstr($content, 'HG:') === false
             )
             {
-                $error = 'Invalid version "%s" in file comment; consider "CVS: <cvs_id>" or "SVN: <svn_id>" or "GIT: <git_id>" or "HG: <hg_id>" instead';
+                $error = 'Invalid version "%s" in file comment; consider "CVS: <cvs_id>" or "SVN: <svn_id>" or "GIT: <git_id>" or "HG: <hg_id>" instead.';
                 $data  = array($content);
                 $phpcsFile->addWarning($error, $tag, 'InvalidVersion', $data);
             }

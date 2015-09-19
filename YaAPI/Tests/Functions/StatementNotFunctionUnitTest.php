@@ -30,6 +30,9 @@ class YaAPI_Tests_Functions_StatementNotFunctionUnitTest extends AbstractSniffUn
                 8  => 1,
                 9  => 1,
                 10 => 1,
+                12 => 1,
+                14 => 1,
+                16 => 1,
                ];
     }
 

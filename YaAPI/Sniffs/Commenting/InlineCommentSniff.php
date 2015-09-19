@@ -111,7 +111,7 @@ class YaAPI_Sniffs_Commenting_InlineCommentSniff implements PHP_CodeSniffer_Snif
             {
                 $data       = array($comment{2});
                 $padding    = (strlen($tokens[$stackPtr]['content']) - strlen($comment));
-                $padding    = str_repeat("\t", $padding - 2);
+                $padding    = str_repeat(' ', $padding - 2);
                 $newComment = ltrim($comment, '* ');
                 $newComment = $padding . ' * ' . ucfirst($newComment) . $phpcsFile->eolChar;
             }

@@ -133,9 +133,9 @@ class MyClass
 
     /**
      * BeforeParamType
-     * FixableError: false
+     * FixableError: true
      *
-     * @param  integer  $var  Some awesome var.
+     * @param   integer  $var  Some awesome var.
      *
      * @return  integer
      */

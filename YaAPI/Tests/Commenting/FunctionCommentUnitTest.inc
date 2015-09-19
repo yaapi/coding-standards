@@ -133,7 +133,7 @@ class MyClass
 
     /**
      * BeforeParamType
-     * FixableError: false
+     * FixableError: true
      *
      * @param  integer  $var  Some awesome var.
      *
