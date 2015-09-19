@@ -22,19 +22,18 @@ class YaAPI_Sniffs_Commenting_InlineCommentSniff implements PHP_CodeSniffer_Snif
     /**
      * Returns an array of tokens this test wants to listen for.
      *
-     * @return  array
+     * @return array
      */
     public function register()
     {
-        return [T_COMMENT];
+        return array(T_COMMENT);
     }
 
     /**
      * Processes this test, when one of its tokens is encountered.
      *
      * @param   PHP_CodeSniffer_File  $phpcsFile  The file being scanned.
-     * @param   int                   $stackPtr   The position of the current token
-     *                                            in the stack passed in $tokens.
+     * @param   int                   $stackPtr   The position of the current token in the stack passed in $tokens.
      *
      * @return  void
      */
@@ -60,29 +59,25 @@ class YaAPI_Sniffs_Commenting_InlineCommentSniff implements PHP_CodeSniffer_Snif
                 $phpcsFile->fixer->replaceToken($stackPtr, $newComment);
             }
         }
-        elseif ($tokens[$stackPtr]['content']{0} === '/'
-            && $tokens[$stackPtr]['content']{1} === '/'
-        )
+        elseif ($tokens[$stackPtr]['content']{0} === '/' && $tokens[$stackPtr]['content']{1} === '/')
         {
             $phpcsFile->recordMetric($stackPtr, 'Inline comment style', '// ...');
             $singleLine = true;
         }
-        elseif ($tokens[$stackPtr]['content']{0} === '/'
-            && $tokens[$stackPtr]['content']{1} === '*'
-        )
+        elseif ($tokens[$stackPtr]['content']{0} === '/' && $tokens[$stackPtr]['content']{1} === '*')
         {
             $phpcsFile->recordMetric($stackPtr, 'Inline comment style', '/* ... */');
         }
 
         // Always have a space between // and the start of the comment text.
         // The exception to this is if the preceding line consists of a single open bracket.
-        if ($tokens[$stackPtr]['content']{0} === '/' && $tokens[$stackPtr]['content']{1} === '/'
-            && isset($tokens[$stackPtr]['content']{2}) && $tokens[$stackPtr]['content']{2} !== ' '
-            && isset($tokens[($stackPtr - 1)]['content']{0}) && $tokens[($stackPtr - 1)]['content']{0} !== '}'
+        if ($tokens[$stackPtr]['content']{0} === '/' && $tokens[$stackPtr]['content']{1} === '/' && isset($tokens[$stackPtr]['content']{2})
+            && $tokens[$stackPtr]['content']{2} !== ' ' && isset($tokens[($stackPtr - 1)]['content']{0})
+            && $tokens[($stackPtr - 1)]['content']{0} !== '}'
         )
         {
             $error = 'Missing space between the // and the start of the comment text.';
-            $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'NoSpace');
+            $fix = $phpcsFile->addFixableError($error, $stackPtr, 'NoSpace');
 
             if ($fix === true)
             {
@@ -94,40 +89,35 @@ class YaAPI_Sniffs_Commenting_InlineCommentSniff implements PHP_CodeSniffer_Snif
         }
 
         /*
-         * New lines should always start with an upper case letter, unless.
-         * The line is a continuation of a complete sentence,
+         * New lines should always start with an upper case letter, unless
+         * the line is a continuation of a complete sentence,
          * the term is code and is case sensitive.(@todo)
          */
-        if (($singleLine === true && isset($tokens[$stackPtr]['content']{3})
-            && $tokens[$stackPtr]['content']{2} === ' '
-            && $tokens[$stackPtr]['content']{3} !== strtoupper($tokens[$stackPtr]['content']{3}))
-            || (isset($comment{2})
-            && $comment{0} === '*' && $comment{1} === ' '
-            && $comment{2} !== strtoupper($comment{2}))
+        if (($singleLine === true && isset($tokens[$stackPtr]['content']{3}) && $tokens[$stackPtr]['content']{2} === ' '
+            && $tokens[$stackPtr]['content']{3} !== strtoupper($tokens[$stackPtr]['content']{3})) || (isset($comment{2}) && $comment{0} === '*'
+            && $comment{1} === ' ' && $comment{2} !== strtoupper($comment{2}))
         )
         {
-            $error    = 'Comment must start with a capital letter; found "%s"';
+            $error = 'Comment must start with a capital letter; found "%s"';
             $previous = $phpcsFile->findPrevious(T_COMMENT, $stackPtr - 1);
 
             if ($singleLine === true)
             {
-                $data       = [$comment{3}];
+                $data       = array($comment{3});
                 $newComment = ltrim($tokens[$stackPtr]['content'], '\// ');
                 $newComment = '// ' . ucfirst($newComment);
             }
             else
             {
-                $data       = [$comment{2}];
+                $data       = array($comment{2});
                 $padding    = (strlen($tokens[$stackPtr]['content']) - strlen($comment));
-                $padding    = str_repeat(' ', $padding - 1);
-                $newComment = ltrim($tokens[$stackPtr]['content'], '* ');
-                $newComment = $padding . '* ' . ucfirst($newComment);
+                $padding    = str_repeat("\t", $padding - 2);
+                $newComment = ltrim($comment, '* ');
+                $newComment = $padding . ' * ' . ucfirst($newComment) . $phpcsFile->eolChar;
             }
 
             // Check for a comment on the previous line.
-            if ($tokens[$previous]['line'] === $tokens[$stackPtr]['line'] - 1
-                && '/*' !== substr(ltrim($tokens[$previous]['content']), 0, 2)
-            )
+            if ($tokens[$previous]['line'] === $tokens[$stackPtr]['line'] - 1 && '/*' !== substr(ltrim($tokens[$previous]['content']), 0, 2))
             {
                 $test = trim($tokens[$previous]['content']);
 
@@ -163,7 +153,7 @@ class YaAPI_Sniffs_Commenting_InlineCommentSniff implements PHP_CodeSniffer_Snif
         if (isset($tokens[$previous]['line']) && $tokens[$previous]['line'] === $tokens[$stackPtr]['line'])
         {
             $error = 'Please put your comment on a separate line *preceding* your code; found "%s"';
-            $data  = [$comment];
+            $data = array($comment);
             $phpcsFile->addError($error, $stackPtr, 'SameLine', $data);
         }
 
@@ -176,7 +166,7 @@ class YaAPI_Sniffs_Commenting_InlineCommentSniff implements PHP_CodeSniffer_Snif
         )
         {
             $error = 'Please consider a blank line preceding your comment.';
-            $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'BlankBefore');
+            $fix = $phpcsFile->addFixableError($error, $stackPtr, 'BlankBefore');
 
             if ($fix === true)
             {
@@ -186,14 +176,14 @@ class YaAPI_Sniffs_Commenting_InlineCommentSniff implements PHP_CodeSniffer_Snif
 
         /*
          * Comment blocks that introduce large sections of code and are more than 2 lines long
-         * should use /* * /  and should use * on each line with the same space/tab rules as doc blocks.
+         * should use /* * / and should use * on each line with the same space/tab rules as doc
+         * blocks.
          * If you need a large introduction consider whether this block should be separated into a
          * method to reduce complexity and therefore providing a full docblock.
          */
         $next = $phpcsFile->findNext(T_COMMENT, $stackPtr + 1);
 
-        if ($singleLine === true
-            && isset($tokens[$next]['line']) && $tokens[$next]['line'] === $tokens[$stackPtr]['line'] + 1
+        if ($singleLine === true && isset($tokens[$next]['line']) && $tokens[$next]['line'] === $tokens[$stackPtr]['line'] + 1
             && $tokens[($stackPtr - 1)]['content'] !== '}'
         )
         {

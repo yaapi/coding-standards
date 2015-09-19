@@ -45,7 +45,7 @@ class YaAPI_Sniffs_Commenting_FunctionCommentSniff extends PEAR_Sniffs_Commentin
         {
             if ($tokens[$tag]['content'] === '@return')
             {
-                // YaAPI Standard - Constructors and destructors should not have a @return tag
+                // Joomla Standard - Constructors and destructors should not have a @return tag
                 if ($isSpecialMethod)
                 {
                     $error = 'Constructor and destructor comments must not have a @return tag';
@@ -83,7 +83,7 @@ class YaAPI_Sniffs_Commenting_FunctionCommentSniff extends PEAR_Sniffs_Commentin
             {
                 // Check return type (can have multiple return types separated by '|').
                 $typeNames      = explode('|', $content);
-                $suggestedNames = [];
+                $suggestedNames = array();
 
                 foreach ($typeNames as $i => $typeName)
                 {
@@ -99,11 +99,11 @@ class YaAPI_Sniffs_Commenting_FunctionCommentSniff extends PEAR_Sniffs_Commentin
 
                 if ($content !== $suggestedType)
                 {
-                    $error = 'Invalid function return type. Expected "%s"; Found "%s"';
-                    $data  = [
-                              $suggestedType,
-                              $content,
-                             ];
+                    $error = 'Expected "%s" but found "%s" for function return type';
+                    $data  = array(
+                        $suggestedType,
+                        $content
+                    );
 
                     $fix = $phpcsFile->addFixableError($error, $return, 'InvalidReturn', $data);
 
@@ -113,18 +113,21 @@ class YaAPI_Sniffs_Commenting_FunctionCommentSniff extends PEAR_Sniffs_Commentin
                     }
                 }
 
-                // If return type is not void, there needs to be a return statement somewhere in the function that returns something.
-                // Skip this check for mixed return types.
-                if (!in_array($content, ['void', 'mixed']))
+                /*
+                 * If return type is not void, there needs to be a return statement
+                 * somewhere in the function that returns something.
+                 * Skip this check for mixed return types.
+                 */
+                if (!in_array($content, array('void', 'mixed')))
                 {
                     if (isset($tokens[$stackPtr]['scope_closer']) === true)
                     {
                         $endToken    = $tokens[$stackPtr]['scope_closer'];
-                        $returnToken = $phpcsFile->findNext([T_RETURN, T_YIELD], $stackPtr, $endToken);
+                        $returnToken = $phpcsFile->findNext(array(T_RETURN, T_YIELD), $stackPtr, $endToken);
 
                         if ($returnToken === false)
                         {
-                            $error = 'Function return type is not void, but function has no return statement.';
+                            $error = 'Function return type is not void, but function has no return statement';
                             $phpcsFile->addError($error, $return, 'InvalidNoReturn');
                         }
                         else
@@ -133,7 +136,7 @@ class YaAPI_Sniffs_Commenting_FunctionCommentSniff extends PEAR_Sniffs_Commentin
 
                             if ($tokens[$semicolon]['code'] === T_SEMICOLON)
                             {
-                                $error = 'Function return type is not void, but function is returning void here.';
+                                $error = 'Function return type is not void, but function is returning void here';
                                 $phpcsFile->addError($error, $returnToken, 'InvalidReturnNotVoid');
                             }
                         }
@@ -143,7 +146,7 @@ class YaAPI_Sniffs_Commenting_FunctionCommentSniff extends PEAR_Sniffs_Commentin
         }
         else
         {
-            $error = 'Missing @return tag in function comment.';
+            $error = 'Missing @return tag in function comment';
             $phpcsFile->addError($error, $tokens[$commentStart]['comment_closer'], 'MissingReturn');
         }
     }
@@ -166,7 +169,7 @@ class YaAPI_Sniffs_Commenting_FunctionCommentSniff extends PEAR_Sniffs_Commentin
     {
         $tokens = $phpcsFile->getTokens();
 
-        $params  = [];
+        $params  = array();
         $maxType = 0;
         $maxVar  = 0;
 
@@ -185,7 +188,7 @@ class YaAPI_Sniffs_Commenting_FunctionCommentSniff extends PEAR_Sniffs_Commentin
 
             if ($tokens[($tag + 2)]['code'] === T_DOC_COMMENT_STRING)
             {
-                $matches = [];
+                $matches = array();
                 preg_match('/([^$&]+)(?:((?:\$|&)[^\s]+)(?:(\s+)(.*))?)?/', $tokens[($tag + 2)]['content'], $matches);
 
                 $typeLen   = strlen($matches[1]);
@@ -233,35 +236,35 @@ class YaAPI_Sniffs_Commenting_FunctionCommentSniff extends PEAR_Sniffs_Commentin
                     }
                     else
                     {
-                        $error = 'Missing parameter comment.';
+                        $error = 'Missing parameter comment';
                         $phpcsFile->addError($error, $tag, 'MissingParamComment');
                     }
                 }
                 else
                 {
-                    $error = 'Missing parameter name.';
+                    $error = 'Missing parameter name';
                     $phpcsFile->addError($error, $tag, 'MissingParamName');
                 }
             }
             else
             {
-                $error = 'Missing parameter type.';
+                $error = 'Missing parameter type';
                 $phpcsFile->addError($error, $tag, 'MissingParamType');
             }
 
-            $params[] = [
-                         'tag'         => $tag,
-                         'type'        => $type,
-                         'var'         => $var,
-                         'comment'     => $comment,
-                         'type_space'  => $typeSpace,
-                         'var_space'   => $varSpace,
-                         'align_space' => $tokens[($tag + 1)]['content'],
-                        ];
+            $params[] = array(
+                'tag'         => $tag,
+                'type'        => $type,
+                'var'         => $var,
+                'comment'     => $comment,
+                'type_space'  => $typeSpace,
+                'var_space'   => $varSpace,
+                'align_space' => $tokens[($tag + 1)]['content']
+            );
         }
 
         $realParams    = $phpcsFile->getMethodParameters($stackPtr);
-        $foundParams   = [];
+        $foundParams   = array();
         $previousParam = null;
 
         foreach ($params as $pos => $param)
@@ -273,13 +276,26 @@ class YaAPI_Sniffs_Commenting_FunctionCommentSniff extends PEAR_Sniffs_Commentin
 
             $foundParams[] = $param['var'];
 
-            // YaAPI change: There must be 3 spaces after the @param tag
-            // to make it line up with the @return tag.
+            // Joomla change: There must be 3 spaces after the @param tag to make it line up with the @return tag
             if ($param['align_space'] !== '   ')
             {
-                $error = 'Expected 3 spaces before variable type, found %s';
-                $data  = [strlen($param['align_space'])];
-                $phpcsFile->addError($error, $param['tag'], 'BeforeParamType', $data);
+                $error  = 'Expected 3 spaces before variable type, found %s';
+                $spaces = strlen($param['align_space']);
+                $data   = array($spaces);
+                $fix    = $phpcsFile->addFixableError($error, $param['tag'], 'BeforeParamType', $data);
+
+                if ($fix === true)
+                {
+                    $phpcsFile->fixer->beginChangeset();
+
+                    for ($i = 0; $i < $spaces; $i++)
+                    {
+                        $phpcsFile->fixer->replaceToken(($param['tag'] + 1), '');
+                    }
+
+                    $phpcsFile->fixer->addContent($param['tag'], '   ');
+                    $phpcsFile->fixer->endChangeset();
+                }
             }
 
             // Make sure the param name is correct.
@@ -290,12 +306,12 @@ class YaAPI_Sniffs_Commenting_FunctionCommentSniff extends PEAR_Sniffs_Commentin
                 if ($realName !== $param['var'])
                 {
                     $code = 'ParamNameNoMatch';
-                    $data = [
-                             $param['var'],
-                             $realName,
-                            ];
+                    $data = array(
+                        $param['var'],
+                        $realName
+                    );
 
-                    $error = 'Doc comment for parameter "%s" does not match ';
+                    $error = 'Doc comment for parameter %s does not match ';
 
                     if (strtolower($param['var']) === strtolower($realName))
                     {
@@ -303,7 +319,7 @@ class YaAPI_Sniffs_Commenting_FunctionCommentSniff extends PEAR_Sniffs_Commentin
                         $code = 'ParamNameNoCaseMatch';
                     }
 
-                    $error .= 'actual variable name "%s".';
+                    $error .= 'actual variable name %s';
 
                     $phpcsFile->addError($error, $param['tag'], $code, $data);
                 }
@@ -311,7 +327,7 @@ class YaAPI_Sniffs_Commenting_FunctionCommentSniff extends PEAR_Sniffs_Commentin
             elseif (substr($param['var'], -4) !== ',...')
             {
                 // We must have an extra parameter comment.
-                $error = 'Superfluous parameter comment.';
+                $error = 'Superfluous parameter comment';
                 $phpcsFile->addError($error, $param['tag'], 'ExtraParamComment');
             }
 
@@ -320,7 +336,7 @@ class YaAPI_Sniffs_Commenting_FunctionCommentSniff extends PEAR_Sniffs_Commentin
                 continue;
             }
 
-            // YaAPI change: Enforces alignment of the param variables and comments
+            // Joomla change: Enforces alignment of the param variables and comments
             if ($previousParam !== null)
             {
                 $previousName = ($previousParam['var'] !== '') ? $previousParam['var'] : 'UNKNOWN';
@@ -328,28 +344,46 @@ class YaAPI_Sniffs_Commenting_FunctionCommentSniff extends PEAR_Sniffs_Commentin
                 // Check to see if the parameters align properly.
                 if (!$this->paramVarsAlign($param, $previousParam))
                 {
-                    $error = 'The variable names for parameters %s and %s do not align.';
-                    $data  = [
-                              $previousName,
-                              $param['var'],
-                             ];
+                    $error = 'The variable names for parameters %s and %s do not align';
+                    $data  = array(
+                        $previousName,
+                        $param['var']
+                    );
                     $phpcsFile->addError($error, $param['tag'], 'ParameterNamesNotAligned', $data);
                 }
 
                 // Check to see if the comments align properly.
                 if (!$this->paramCommentsAlign($param, $previousParam))
                 {
-                    $error = 'The comments for parameters %s and %s do not align.';
-                    $data  = [
-                              $previousName,
-                              $param['var'],
-                             ];
+                    $error = 'The comments for parameters %s and %s do not align';
+                    $data  = array(
+                        $previousName,
+                        $param['var']
+                    );
                     $phpcsFile->addError($error, $param['tag'], 'ParameterCommentsNotAligned', $data);
                 }
             }
 
             $previousParam = $param;
         }
+
+        $realNames = array();
+
+        foreach ($realParams as $realParam)
+        {
+            $realNames[] = $realParam['name'];
+        }
+
+        // Report missing comments.
+        $diff = array_diff($realNames, $foundParams);
+
+        foreach ($diff as $neededParam)
+        {
+            $error = 'Doc comment for parameter "%s" missing';
+            $data  = array($neededParam);
+            $phpcsFile->addError($error, $commentStart, 'MissingParamTag', $data);
+        }
+
     }
 
     /**
@@ -362,10 +396,10 @@ class YaAPI_Sniffs_Commenting_FunctionCommentSniff extends PEAR_Sniffs_Commentin
      */
     private function paramCommentsAlign($param, $previousParam)
     {
-        $stringLength = strlen($param['type']) + $param['type_space'] + strlen($param['var']) + $param['var_space'];
-        $prev         = strlen($previousParam['type']) + $previousParam['type_space'] + strlen($previousParam['var']) + $previousParam['var_space'];
+        $paramLength = strlen($param['type']) + $param['type_space'] + strlen($param['var']) + $param['var_space'];
+        $prevLength  = strlen($previousParam['type']) + $previousParam['type_space'] + strlen($previousParam['var']) + $previousParam['var_space'];
 
-        return $stringLength === $prev;
+        return $paramLength === $prevLength;
     }
 
     /**

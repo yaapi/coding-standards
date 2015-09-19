@@ -2,7 +2,7 @@
 class MyClass
 {
     protected $value = 'value-default';
-    
+
     public function __construct($value = null)
     {
         if (null !== $value)
@@ -10,21 +10,31 @@ class MyClass
             $this->value = $value;
         }
     }
-    
+
     public function getValue()
     {
+        $k = new self;
+        $k = new self;
+        $k = new self;
+
         return $this->value;
     }
 }
 
-// Should throw an error.
 $a = new MyClass;
+$v = (new MyClass)->getValue();
 
-// Should be fine.
-$b = new MyClass('new-value');
+$a = new MyClass;
+$v = (new MyClass)->getValue();
 
-// Should throw an error.
-$a = (new MyClass)->getValue();
+$a = new MyClass;
+$v = (new MyClass)->getValue();
 
-// Should be fine.
-$b = (new MyClass('new-value'))->getValue();
+$a = new MyClass;
+$v = (new MyClass)->getValue();
+
+$a = new MyClass;
+$v = (new MyClass)->getValue();
+
+$a = new MyClass;
+$v = (new MyClass)->getValue();

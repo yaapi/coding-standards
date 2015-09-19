@@ -27,6 +27,8 @@ class YaAPI_Tests_Operators_ValidLogicalOperatorsUnitTest extends AbstractSniffU
                 6  => 1,
                 11 => 1,
                 16 => 2,
+                21 => 1,
+                22 => 1,
                ];
     }
 

@@ -64,6 +64,7 @@ class YaAPI_Sniffs_Classes_InstantiateNewClassesSniff implements PHP_CodeSniffer
                     case T_LNUMBER :
                     case T_CONSTANT_ENCAPSED_STRING :
                     case T_DOUBLE_QUOTED_STRING :
+                    case T_ARRAY :
                         if ($started)
                         {
                             $valid   = true;
@@ -110,6 +111,11 @@ class YaAPI_Sniffs_Classes_InstantiateNewClassesSniff implements PHP_CodeSniffer
                 );
 
                 $phpcsFile->fixer->beginChangeset();
+
+                if ($tokens[($stackPtr + 3)]['code'] === T_WHITESPACE)
+                {
+                    $phpcsFile->fixer->replaceToken(($stackPtr + 3), '');
+                }
 
                 for ($i = $classNameEnd; $i < $cnt; $i++)
                 {

@@ -24,12 +24,20 @@ class YaAPI_Tests_WhiteSpace_MemberVarSpacingUnitTest extends AbstractSniffUnitT
     public function getErrorList()
     {
         return [
-                5  => 1,
-                8  => 1,
-                23 => 1,
-                28 => 1,
-                42 => 1,
-                45 => 1,
+                5   => 1,
+                8   => 1,
+                23  => 1,
+                28  => 1,
+                42  => 1,
+                45  => 1,
+                51  => 1,
+                54  => 1,
+                69  => 1,
+                74  => 1,
+                88  => 1,
+                91  => 1,
+                103 => 1,
+                106 => 1,
                ];
     }
 
