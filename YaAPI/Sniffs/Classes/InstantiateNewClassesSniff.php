@@ -65,6 +65,8 @@ class YaAPI_Sniffs_Classes_InstantiateNewClassesSniff implements PHP_CodeSniffer
                     case T_CONSTANT_ENCAPSED_STRING :
                     case T_DOUBLE_QUOTED_STRING :
                     case T_ARRAY :
+                    case T_TRUE :
+                    case T_FALSE :
                         if ($started)
                         {
                             $valid   = true;
