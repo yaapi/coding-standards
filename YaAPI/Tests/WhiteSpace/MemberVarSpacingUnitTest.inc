@@ -104,4 +104,13 @@ class MyClass
 
     public $val = null;
     public $val1;
+
+    /**
+     * Var description.
+     *
+     * @var    integer
+     * @since  1.0
+     */
+    
+    public $val2 = 1;
 }

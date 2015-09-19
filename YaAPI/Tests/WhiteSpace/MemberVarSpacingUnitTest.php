@@ -38,6 +38,7 @@ class YaAPI_Tests_WhiteSpace_MemberVarSpacingUnitTest extends AbstractSniffUnitT
                 91  => 1,
                 103 => 1,
                 106 => 1,
+                113 => 1,
                ];
     }
 
