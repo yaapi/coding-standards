@@ -17,10 +17,14 @@ before_script:
   - composer self-update
   - composer install --prefer-source --no-progress --no-interaction
   - ./vendor/bin/phpcs --config-set installed_paths $(pwd)
+  - mkdir -p build/logs
 
 script:
-  - ./vendor/bin/phpunit --filter YaAPI vendor/squizlabs/php_codesniffer/tests/AllTests.php
+  - ./vendor/bin/phpunit --filter YaAPI --coverage-clover build/logs/clover.xml vendor/squizlabs/php_codesniffer/tests/AllTests.php
   - ./vendor/bin/phpcs -sp --extensions=php --ignore=*/vendor/* --standard=YaAPI */
+
+after_success:
+  - sh -c 'if ["$TRAVIS_PHP_VERSION" != "hhvm"]; then php vendor/bin/coveralls -v; fi;'
 
 notifications:
   email: false
