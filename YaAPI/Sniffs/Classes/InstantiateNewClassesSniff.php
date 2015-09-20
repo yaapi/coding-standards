@@ -49,7 +49,7 @@ class YaAPI_Sniffs_Classes_InstantiateNewClassesSniff implements PHP_CodeSniffer
             {
                 switch ($tokens[$cnt]['code'])
                 {
-                    case T_SEMICOLON:
+                    case T_SEMICOLON :
                     case T_COMMA :
                         $valid   = true;
                         $running = false;
@@ -67,7 +67,7 @@ class YaAPI_Sniffs_Classes_InstantiateNewClassesSniff implements PHP_CodeSniffer
                     case T_ARRAY :
                     case T_TRUE :
                     case T_FALSE :
-                        if ($started)
+                        if ($started === true)
                         {
                             $valid   = true;
                             $running = false;
@@ -75,7 +75,7 @@ class YaAPI_Sniffs_Classes_InstantiateNewClassesSniff implements PHP_CodeSniffer
                         break;
 
                     case T_CLOSE_PARENTHESIS :
-                        if (!$started)
+                        if ($started === false)
                         {
                             $valid = true;
                         }
