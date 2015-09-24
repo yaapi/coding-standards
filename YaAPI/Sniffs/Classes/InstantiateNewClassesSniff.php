@@ -41,56 +41,49 @@ class YaAPI_Sniffs_Classes_InstantiateNewClassesSniff implements PHP_CodeSniffer
 
         do
         {
-            if (!isset($tokens[$cnt]))
+            switch ($tokens[$cnt]['code'])
             {
-                $running = false;
-            }
-            else
-            {
-                switch ($tokens[$cnt]['code'])
-                {
-                    case T_SEMICOLON :
-                    case T_COMMA :
+                case T_SEMICOLON :
+                case T_COMMA :
+                    $valid   = true;
+                    $running = false;
+                    break;
+
+                case T_OPEN_PARENTHESIS :
+                    $started = true;
+                    break;
+
+                case T_VARIABLE :
+                case T_STRING :
+                case T_LNUMBER :
+                case T_CONSTANT_ENCAPSED_STRING :
+                case T_DOUBLE_QUOTED_STRING :
+                case T_ARRAY :
+                case T_OPEN_SHORT_ARRAY :
+                case T_TRUE :
+                case T_FALSE :
+                case T_NULL :
+                    if ($started === true)
+                    {
                         $valid   = true;
                         $running = false;
-                        break;
+                    }
+                    break;
 
-                    case T_OPEN_PARENTHESIS :
-                        $started = true;
-                        break;
+                case T_CLOSE_PARENTHESIS :
+                    if ($started === false)
+                    {
+                        $valid = true;
+                    }
 
-                    case T_VARIABLE :
-                    case T_STRING :
-                    case T_LNUMBER :
-                    case T_CONSTANT_ENCAPSED_STRING :
-                    case T_DOUBLE_QUOTED_STRING :
-                    case T_ARRAY :
-                    case T_OPEN_SHORT_ARRAY :
-                    case T_TRUE :
-                    case T_FALSE :
-                    case T_NULL :
-                        if ($started === true)
-                        {
-                            $valid   = true;
-                            $running = false;
-                        }
-                        break;
+                    $running = false;
+                    break;
 
-                    case T_CLOSE_PARENTHESIS :
-                        if ($started === false)
-                        {
-                            $valid = true;
-                        }
-
-                        $running = false;
-                        break;
-
-                    case T_WHITESPACE :
-                        break;
-                }
-
-                $cnt++;
+                case T_WHITESPACE :
+                    break;
             }
+
+            $cnt++;
         }
         while ($running === true);
 
