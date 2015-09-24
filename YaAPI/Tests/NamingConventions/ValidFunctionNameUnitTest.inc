@@ -15,4 +15,29 @@ class MyClass
     {
         return;
     }
+
+    public function coolName_Function()
+    {
+        return;
+    }
+
+    function _noPrivate()
+    {
+        return;
+    }
+}
+
+echo preg_replace_callback('/-([a-z])/', function ($m) { return strtoupper($m[1]); }, 'my-class');
+
+class myClass
+{
+    public function myClass()
+    {
+        
+    }
+
+    public function _myClass()
+    {
+    
+    }
 }
