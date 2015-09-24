@@ -28,6 +28,7 @@ class YaAPI_Tests_NamingConventions_ValidFunctionNameUnitTest extends AbstractSn
                 9  => 1,
                 14 => 1,
                 19 => 1,
+                24 => 1,
                ];
     }
 
