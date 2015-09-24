@@ -114,3 +114,28 @@ class MyClass
     
     public $val2 = 1;
 }
+
+trait MyTrait
+{
+
+
+    /**
+     * Var description.
+     *
+     * @var    integer
+     * @since  1.0
+     */
+    public $value = 1;
+
+    public $val = null;
+    public $val1;
+
+    /**
+     * Var description.
+     *
+     * @var    integer
+     * @since  1.0
+     */
+
+    public $val2 = 1;
+}
