@@ -139,3 +139,31 @@ trait MyTrait
 
     public $val2 = 1;
 }
+
+class MyClass
+{
+
+    private $foo; // comment
+
+    private $bar;
+}
+
+class MyClass
+{
+    private $foo; // comment
+
+    /**
+     * @var type
+     */
+    private $bar;
+}
+
+class Foo
+{
+    /**
+     * @var integer
+     */
+    private $foo; // comment
+
+    private $bar;
+}
