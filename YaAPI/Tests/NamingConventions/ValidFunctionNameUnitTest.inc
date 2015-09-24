@@ -21,13 +21,18 @@ class MyClass
         return;
     }
 
+    function cool_function()
+    {
+        return;
+    }
+
     function _noPrivate()
     {
         return;
     }
 }
 
-echo preg_replace_callback('/-([a-z])/', function ($m) { return strtoupper($m[1]); }, 'my-class');
+echo preg_replace_callback('~-([a-z])~', function ($match) { return strtoupper($match[1]); }, 'hello-world');
 
 class myClass
 {
