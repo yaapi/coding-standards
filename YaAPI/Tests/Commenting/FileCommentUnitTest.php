@@ -23,7 +23,20 @@ class YaAPI_Tests_Commenting_FileCommentUnitTest extends AbstractSniffUnitTest
      */
     public function getErrorList()
     {
-        return [5 => 1];
+        return [
+                21 => 2,
+                22 => 1,
+                23 => 2,
+                26 => 1,
+                28 => 1,
+                29 => 1,
+                30 => 1,
+                31 => 1,
+                32 => 1,
+                33 => 1,
+                34 => 1,
+                35 => 1,
+               ];
     }
 
     /**
@@ -36,6 +49,10 @@ class YaAPI_Tests_Commenting_FileCommentUnitTest extends AbstractSniffUnitTest
      */
     public function getWarningList()
     {
-        return [];
+        return [
+                29 => 1,
+                30 => 1,
+                34 => 1,
+               ];
     }
 }
