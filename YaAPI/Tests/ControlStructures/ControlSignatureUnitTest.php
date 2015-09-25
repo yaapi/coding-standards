@@ -24,14 +24,16 @@ class YaAPI_Tests_ControlStructures_ControlSignatureUnitTest extends AbstractSni
     public function getErrorList()
     {
         return [
-                13 => 1,
-                22 => 1,
-                27 => 1,
+                7  => 1,
+                16 => 1,
+                21 => 1,
+                31 => 1,
                 37 => 1,
-                43 => 1,
-                57 => 1,
-                64 => 1,
+                51 => 1,
+                58 => 1,
+                69 => 1,
                 75 => 1,
+                89 => 1,
                ];
     }
 

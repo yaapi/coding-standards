@@ -2,12 +2,6 @@
 $a = 1;
 $b = 2;
 
-// Warnings
-
-
-// Errors
-
-
 // Fixable Errors
     // SpaceAfterKeyword
     if($a)
@@ -76,3 +70,21 @@ $b = 2;
     {
         echo 'muh';
     }
+
+
+if   ($a === 2)
+{
+    echo 'muh';
+}
+
+if ($a === 2)
+{ // blubb
+    echo 'muh';
+}
+
+do
+{
+    echo 'muh';
+}
+while ($a < $b) 
+;
