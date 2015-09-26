@@ -13,3 +13,5 @@ if ($a and $c or $b)
 {
     echo 6;
 }
+
+if ($a and $b) $c = 2;

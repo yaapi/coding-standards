@@ -44,6 +44,8 @@ class YaAPI_Tests_Commenting_FunctionCommentUnitTest extends AbstractSniffUnitTe
                 164 => 1,
                 178 => 1,
                 192 => 1,
+                201 => 1,
+                206 => 1,
                ];
     }
 

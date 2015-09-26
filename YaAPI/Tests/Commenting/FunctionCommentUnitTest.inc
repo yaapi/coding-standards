@@ -197,4 +197,18 @@ class MyClass
     {
         return 2;
     }
+
+    /**
+     * ParameterCommentsNotAligned
+     * FixableError: false
+     *
+     * @param   integer  $var    Some awesome var.
+     * @param
+     *
+     * @return  integer
+     */
+    public function myFunction($var, $value)
+    {
+        return 2;
+    }
 }

@@ -4,41 +4,37 @@ declare(encoding='utf-8');
 
 /**
  *
- * Short description for fileasdasd.
+ * Short description for file.
  *
  *
- * asdasd
- * long description for file (if any)
- * asdasdadada
+ * We also have a
+ * long description for the file,
+ * awesome.
  *
- * PHP versio
+ * PHP version
  *
- * LICENSE: This source file is subject to version 3.0 of the PHP license
- * that is available through the world-wide-web at the following URI:
- * http://www.php.net/license/3_0.txt.  If you did not receive a copy of
- * the PHP License and are unable to obtain it through the web, please
- * send a note to license@php.net so we can mail you a copy immediately.
  * @category   _wrong_category
- * @package    PHP_CodeSniffer
- * @package    ADDITIONAL PACKAGE TAG
- * @subpackage SUBPACKAGE TAG
- * @author     Antônio Carlos Venâncio Júnior <foreign@character.net>
- * @author       Greg Sherwood gsherwood@squiz.net
- * @author     Mr T <t@squiz.net>
+ * @package    YaAPI
+ * @package      Additional Package Tag
+ * @subpackage   Subpackage Tag
+ * @author       Example Author author@example.org
+ * @author     Mr T <t@example.org>
  * @author
- * @copyright  1997~1994 The PHP Group
- * @copyright  1997~1994 The PHP Group
- * @license    http://www.php.net/license/3_0.txt
- * @see
+ * @copyright  2015~2013 YaAPI
+ * @copyright    YaAPI
+ * @license    http://www.gnu.org/licenses/lgpl.txt
+ * @license      http://www.gnu.org/licenses/lgpl.txt
  * @see
  * @version    INVALID VERSION CONTENT
- * @see        Net_Sample::Net_Sample()
- * @see        Net_Other
- * @deprecated asd
+ * @see        YaAPI::No_Function()
+ * @see          YaAPI_Api
+ * @deprecated abc
  * @since      Class available since Release 1.2.0
  * @summary    An unknown summary tag
+ * @subpackage
  */
- 
+ ?>
+ <?php
 /**
  * Not qualified as a file comment.
  *

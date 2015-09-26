@@ -45,18 +45,12 @@ class YaAPI_Sniffs_Operators_ValidLogicalOperatorsSniff implements PHP_CodeSniff
                       'or'  => '||',
                      ];
         $operator  = strtolower($tokens[$stackPtr]['content']);
-
-        if (false === isset($operators[$operator]))
-        {
-            return;
-        }
-
-        $error = 'Logical operator "%s" not allowed; use "%s" instead';
-        $data  = [
-                  $operator,
-                  $operators[$operator],
-                 ];
-        $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'NotAllowed', $data);
+        $error     = 'Logical operator "%s" not allowed; use "%s" instead';
+        $data      = [
+                      $operator,
+                      $operators[$operator],
+                     ];
+        $fix       = $phpcsFile->addFixableError($error, $stackPtr, 'NotAllowed', $data);
 
         if (true === $fix)
         {

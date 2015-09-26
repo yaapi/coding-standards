@@ -45,7 +45,7 @@ class YaAPI_Sniffs_Commenting_FunctionCommentSniff extends PEAR_Sniffs_Commentin
         {
             if ($tokens[$tag]['content'] === '@return')
             {
-                // Joomla Standard - Constructors and destructors should not have a @return tag
+                // YaAPI Standard - Constructors and destructors should not have a @return tag
                 if ($isSpecialMethod)
                 {
                     $error = 'Constructor and destructor comments must not have a @return tag';
@@ -276,7 +276,7 @@ class YaAPI_Sniffs_Commenting_FunctionCommentSniff extends PEAR_Sniffs_Commentin
 
             $foundParams[] = $param['var'];
 
-            // Joomla change: There must be 3 spaces after the @param tag to make it line up with the @return tag
+            // YaAPI change: There must be 3 spaces after the @param tag to make it line up with the @return tag
             if ($param['align_space'] !== '   ')
             {
                 $error  = 'Expected 3 spaces before variable type, found %s';
@@ -336,7 +336,7 @@ class YaAPI_Sniffs_Commenting_FunctionCommentSniff extends PEAR_Sniffs_Commentin
                 continue;
             }
 
-            // Joomla change: Enforces alignment of the param variables and comments
+            // YaAPI change: Enforces alignment of the param variables and comments
             if ($previousParam !== null)
             {
                 $previousName = ($previousParam['var'] !== '') ? $previousParam['var'] : 'UNKNOWN';
