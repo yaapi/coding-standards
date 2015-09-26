@@ -13,7 +13,7 @@ with some minor changes.
 
 ## Requirements
 
-needs                  | dev
----------------------- | ------------------------
-PHP 5.4.3+             | phpunit 4.8.8+
-php_codesniffer 2.3.4+ | php-coveralls dev-master
+require                               | require-dev
+------------------------------------- | ------------------------
+PHP 5.4.3+                            | "phpunit/phpunit": "^4.8.8"
+"squizlabs/php_codesniffer": "^2.3.4" | "satooshi/php-coveralls": "dev-master"
